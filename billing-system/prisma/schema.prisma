@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id        String   @id @default(cuid())
+  name      String
+  rate      Float
+  createdAt DateTime @default(now())
+  bills     Bill[]
+}
+
+model Bill {
+  id          String   @id @default(cuid())
+  companyId   String
+  company     Company  @relation(fields: [companyId], references: [id])
+  amount      Float
+  services    Int
+  total       Float
+  createdAt   DateTime @default(now())
+}
+
